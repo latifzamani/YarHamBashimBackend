@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/EmailFormat', function () {
     return view('welcome');
 });
+Route::get('/EmailForgot', function () {
+    return view('forgotPassword');
+});

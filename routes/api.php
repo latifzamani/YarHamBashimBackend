@@ -22,6 +22,7 @@ use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 // Protect routes using token-based authentication middleware
 
+// -------------------------No Auth-------------------------
 Route::get('/links/show',[MediaController::class,'lShow']);
 Route::get('/supporters/show',[MediaController::class,'sShow']);
 Route::get('/videos/show',[MediaController::class,'vShow']);
@@ -34,11 +35,21 @@ Route::get('/projects/{id}/show',[ProjectController::class,'pidShow']);
 Route::get('/projectImages/show',[ProjectController::class,'imageShow']);
 Route::get('/projectImages/{id}/show',[ProjectController::class,'imageidShow']);
 Route::post('/sendEmail',[ProjectController::class, 'sendEmail']);
+Route::post('/user/forgotPassword',[AuthController::class, 'sendEmailForgotPassword']);
 
+// -------------------------Sanctum-------------------------
 Route::get('/logout',[AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('/user/auth/show',[AuthController::class, 'usersAuthShow'])->middleware('auth:sanctum');
+
+
+// -------------------------Sanctum+Verify-------------------------
 Route::middleware(['auth:sanctum','verified'])->group(function () {
-    // Logout/Register
+    // Auth
     Route::post('/user/register',[AuthController::class,'registerUser']);
+    Route::post('/user/{id}/update',[AuthController::class,'updateUser']);
+    Route::get('/user/show',[AuthController::class, 'usersShow']);
+    Route::get('/user/{id}/show',[AuthController::class, 'usersIdShow']);
+    Route::get('/user/{id}/delete',[AuthController::class, 'delete']);
     // supporters
     Route::post('/supporters/store',[MediaController::class,'sStore']);
     Route::post('/supporters/{id}/update',[MediaController::class,'sUpdate']);
